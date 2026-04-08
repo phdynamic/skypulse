@@ -7,6 +7,9 @@ export default function Header({
   loading,
   darkMode,
   onToggleTheme,
+  handles,
+  activeIndex,
+  onSwitchAccount,
 }) {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md border-b bg-white/80 border-gray-200 dark:bg-[#0f0f13]/80 dark:border-white/10">
@@ -32,8 +35,25 @@ export default function Header({
           )}
         </div>
         <div className="flex items-center gap-3">
+          {/* Account switcher */}
+          <div className="flex gap-1 bg-gray-100 dark:bg-white/10 rounded-lg p-0.5">
+            {handles.map((h, i) => (
+              <button
+                key={h.handle}
+                onClick={() => onSwitchAccount(i)}
+                disabled={loading}
+                className={`px-2.5 py-1 text-xs rounded-md transition-colors ${
+                  i === activeIndex
+                    ? "bg-sky-500/20 text-sky-500 dark:text-sky-400 font-medium"
+                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                } disabled:opacity-50`}
+              >
+                {h.label}
+              </button>
+            ))}
+          </div>
           {lastUpdated && (
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-gray-400 dark:text-gray-500 hidden sm:inline">
               Updated {new Date(lastUpdated).toLocaleString()}
             </span>
           )}

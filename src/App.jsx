@@ -24,6 +24,7 @@ function getInitialDarkMode() {
 }
 
 export default function App() {
+  const [activeIndex, setActiveIndex] = useState(0);
   const [posts, setPosts] = useState([]);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,6 +32,9 @@ export default function App() {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [error, setError] = useState(null);
   const [darkMode, setDarkMode] = useState(getInitialDarkMode);
+
+  const activeHandle = CONFIG.handles[activeIndex].handle;
+  const cacheKey = CONFIG.cacheKey(activeHandle);
 
   function toggleTheme() {
     const next = !darkMode;
@@ -44,21 +48,21 @@ export default function App() {
   }
 
   const fetchData = useCallback(
-    async (forceRefresh = false) => {
+    async (handle, key, forceRefresh = false) => {
       setLoading(true);
       setError(null);
       setProgress(0);
 
       try {
-        const profileData = await getProfile(CONFIG.handle);
+        const profileData = await getProfile(handle);
         setProfile(profileData);
 
         if (profileData.followersCount != null) {
-          appendFollowerSnapshot(CONFIG.handle, profileData.followersCount);
+          appendFollowerSnapshot(handle, profileData.followersCount);
         }
 
         if (!forceRefresh) {
-          const cached = getCachedData(CONFIG.cacheKey, CONFIG.cacheTTLHours);
+          const cached = getCachedData(key, CONFIG.cacheTTLHours);
           if (cached) {
             setPosts(cached.data);
             setLastUpdated(cached.timestamp);
@@ -68,13 +72,13 @@ export default function App() {
         }
 
         const fetchedPosts = await getAuthorFeed(
-          CONFIG.handle,
+          handle,
           CONFIG.maxPostsToFetch,
           (count) => setProgress(count)
         );
 
         setPosts(fetchedPosts);
-        setCachedData(CONFIG.cacheKey, fetchedPosts);
+        setCachedData(key, fetchedPosts);
         setLastUpdated(Date.now());
       } catch (err) {
         console.error("Fetch failed:", err);
@@ -87,12 +91,21 @@ export default function App() {
   );
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData(activeHandle, cacheKey);
+  }, [activeHandle, cacheKey, fetchData]);
 
   function handleRefresh() {
-    clearCachedData(CONFIG.cacheKey);
-    fetchData(true);
+    clearCachedData(cacheKey);
+    fetchData(activeHandle, cacheKey, true);
+  }
+
+  function handleSwitchAccount(index) {
+    if (index === activeIndex) return;
+    setActiveIndex(index);
+    setPosts([]);
+    setProfile(null);
+    setLastUpdated(null);
+    setError(null);
   }
 
   return (
@@ -104,6 +117,9 @@ export default function App() {
         loading={loading}
         darkMode={darkMode}
         onToggleTheme={toggleTheme}
+        handles={CONFIG.handles}
+        activeIndex={activeIndex}
+        onSwitchAccount={handleSwitchAccount}
       />
 
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-8">
@@ -145,11 +161,11 @@ export default function App() {
 
         {!loading && posts.length > 0 && (
           <>
-            <HeatmapGrid posts={posts} />
+            <HeatmapGrid posts={posts} handle={activeHandle} />
             <TopicChart posts={posts} darkMode={darkMode} />
-            <Threads posts={posts} />
-            <TopPosts posts={posts} />
-            <StatCard profile={profile} handle={CONFIG.handle} darkMode={darkMode} />
+            <Threads posts={posts} handle={activeHandle} />
+            <TopPosts posts={posts} handle={activeHandle} />
+            <StatCard profile={profile} handle={activeHandle} darkMode={darkMode} />
           </>
         )}
 
@@ -157,7 +173,7 @@ export default function App() {
           <div className="bg-white border border-gray-200 dark:bg-[#16161e] dark:border-white/10 rounded-xl p-8 text-center">
             <div className="text-gray-500 dark:text-gray-400 text-lg">No posts found</div>
             <p className="text-gray-400 dark:text-gray-500 text-sm mt-2">
-              Could not find any posts for @{CONFIG.handle}
+              Could not find any posts for @{activeHandle}
             </p>
           </div>
         )}

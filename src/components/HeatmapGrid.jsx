@@ -1,6 +1,4 @@
 import React, { useMemo, useState } from "react";
-import CONFIG from "../config";
-
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
 
@@ -9,13 +7,13 @@ function getDayIndex(date) {
   return d === 0 ? 6 : d - 1;
 }
 
-function getPostUrl(uri) {
+function getPostUrl(handle, uri) {
   const parts = uri.split("/");
   const rkey = parts[parts.length - 1];
-  return `https://bsky.app/profile/${CONFIG.handle}/post/${rkey}`;
+  return `https://bsky.app/profile/${handle}/post/${rkey}`;
 }
 
-export default function HeatmapGrid({ posts }) {
+export default function HeatmapGrid({ posts, handle }) {
   const [tooltip, setTooltip] = useState(null);
   const [selectedCell, setSelectedCell] = useState(null);
 
@@ -192,7 +190,7 @@ export default function HeatmapGrid({ posts }) {
               .map((post) => (
                 <a
                   key={post.uri}
-                  href={getPostUrl(post.uri)}
+                  href={getPostUrl(handle, post.uri)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block bg-gray-100 dark:bg-[#0f0f13] rounded-lg p-3 hover:bg-gray-200 dark:hover:bg-white/5 transition-colors"

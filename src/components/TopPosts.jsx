@@ -1,6 +1,4 @@
 import React, { useMemo, useState } from "react";
-import CONFIG from "../config";
-
 const RANGES = [
   { label: "30d", days: 30 },
   { label: "90d", days: 90 },
@@ -8,7 +6,7 @@ const RANGES = [
   { label: "All", days: null },
 ];
 
-export default function TopPosts({ posts }) {
+export default function TopPosts({ posts, handle }) {
   const [sortKey, setSortKey] = useState("totalEngagement");
   const [sortAsc, setSortAsc] = useState(false);
   const [range, setRange] = useState(null);
@@ -38,7 +36,7 @@ export default function TopPosts({ posts }) {
   function getPostUrl(uri) {
     const parts = uri.split("/");
     const rkey = parts[parts.length - 1];
-    return `https://bsky.app/profile/${CONFIG.handle}/post/${rkey}`;
+    return `https://bsky.app/profile/${handle}/post/${rkey}`;
   }
 
   const sortArrow = (key) => {
