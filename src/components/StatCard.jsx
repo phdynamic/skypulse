@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import { getFollowerHistory } from "../utils/cache";
 
-export default function StatCard({ profile, handle }) {
+export default function StatCard({ profile, handle, darkMode }) {
   const history = useMemo(() => getFollowerHistory(handle), [handle]);
 
   const chartData = useMemo(
@@ -21,25 +21,31 @@ export default function StatCard({ profile, handle }) {
     [history]
   );
 
+  const tickColor = darkMode ? "#888" : "#666";
+  const tooltipBg = darkMode ? "#1a1a2e" : "#fff";
+  const tooltipBorder = darkMode
+    ? "1px solid rgba(255,255,255,0.1)"
+    : "1px solid #e5e7eb";
+
   return (
-    <div className="bg-[#16161e] border border-white/10 rounded-xl p-6">
-      <h2 className="text-lg font-semibold mb-4 text-white">
+    <div className="bg-white border border-gray-200 dark:bg-[#16161e] dark:border-white/10 rounded-xl p-6">
+      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
         Follower Growth
       </h2>
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-[#0f0f13] rounded-lg p-4">
+        <div className="bg-gray-100 dark:bg-[#0f0f13] rounded-lg p-4">
           <div className="text-2xl font-bold text-sky-400">
             {profile?.followersCount?.toLocaleString() ?? "—"}
           </div>
           <div className="text-xs text-gray-500 mt-1">Followers</div>
         </div>
-        <div className="bg-[#0f0f13] rounded-lg p-4">
+        <div className="bg-gray-100 dark:bg-[#0f0f13] rounded-lg p-4">
           <div className="text-2xl font-bold text-purple-400">
             {profile?.followsCount?.toLocaleString() ?? "—"}
           </div>
           <div className="text-xs text-gray-500 mt-1">Following</div>
         </div>
-        <div className="bg-[#0f0f13] rounded-lg p-4">
+        <div className="bg-gray-100 dark:bg-[#0f0f13] rounded-lg p-4">
           <div className="text-2xl font-bold text-emerald-400">
             {profile?.postsCount?.toLocaleString() ?? "—"}
           </div>
@@ -56,18 +62,18 @@ export default function StatCard({ profile, handle }) {
             <LineChart data={chartData}>
               <XAxis
                 dataKey="date"
-                tick={{ fill: "#888", fontSize: 10 }}
+                tick={{ fill: tickColor, fontSize: 10 }}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fill: "#888", fontSize: 10 }}
+                tick={{ fill: tickColor, fontSize: 10 }}
                 tickLine={false}
                 domain={["dataMin - 10", "dataMax + 10"]}
               />
               <Tooltip
                 contentStyle={{
-                  background: "#1a1a2e",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: tooltipBg,
+                  border: tooltipBorder,
                   borderRadius: 8,
                   fontSize: 12,
                 }}

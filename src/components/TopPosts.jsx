@@ -11,7 +11,7 @@ const RANGES = [
 export default function TopPosts({ posts }) {
   const [sortKey, setSortKey] = useState("totalEngagement");
   const [sortAsc, setSortAsc] = useState(false);
-  const [range, setRange] = useState(null); // null = all
+  const [range, setRange] = useState(null);
 
   const filtered = useMemo(() => {
     let list = posts;
@@ -36,7 +36,6 @@ export default function TopPosts({ posts }) {
   }
 
   function getPostUrl(uri) {
-    // uri format: at://did:plc:xxx/app.bsky.feed.post/rkey
     const parts = uri.split("/");
     const rkey = parts[parts.length - 1];
     return `https://bsky.app/profile/${CONFIG.handle}/post/${rkey}`;
@@ -57,15 +56,15 @@ export default function TopPosts({ posts }) {
   ];
 
   return (
-    <div className="bg-[#16161e] border border-white/10 rounded-xl p-6">
+    <div className="bg-white border border-gray-200 dark:bg-[#16161e] dark:border-white/10 rounded-xl p-6">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-lg font-semibold text-white">Top Posts</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Top Posts</h2>
           <p className="text-xs text-gray-500 mt-1">
             {filtered.length} posts
           </p>
         </div>
-        <div className="flex gap-1 bg-[#0f0f13] rounded-lg p-0.5">
+        <div className="flex gap-1 bg-gray-100 dark:bg-[#0f0f13] rounded-lg p-0.5">
           {RANGES.map((r) => (
             <button
               key={r.label}
@@ -73,7 +72,7 @@ export default function TopPosts({ posts }) {
               className={`px-3 py-1 text-xs rounded-md transition-colors ${
                 range === r.days
                   ? "bg-sky-500/20 text-sky-400"
-                  : "text-gray-400 hover:text-white"
+                  : "text-gray-400 hover:text-gray-900 dark:hover:text-white"
               }`}
             >
               {r.label}
@@ -84,13 +83,13 @@ export default function TopPosts({ posts }) {
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-gray-200 dark:border-white/10">
               {columns.map((col) => (
                 <th
                   key={col.key}
                   onClick={() => handleSort(col.key)}
                   className={`py-2 px-2 text-left text-xs font-medium text-gray-400 cursor-pointer
-                              hover:text-white transition-colors select-none ${col.className}`}
+                              hover:text-gray-900 dark:hover:text-white transition-colors select-none ${col.className}`}
                 >
                   {col.label}
                   {sortArrow(col.key)}
@@ -103,12 +102,12 @@ export default function TopPosts({ posts }) {
               <tr
                 key={post.uri}
                 onClick={() => window.open(getPostUrl(post.uri), "_blank")}
-                className="border-b border-white/5 hover:bg-white/5 cursor-pointer transition-colors"
+                className="border-b border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 cursor-pointer transition-colors"
               >
                 <td className="py-2 px-2 text-xs text-gray-400 whitespace-nowrap">
                   {new Date(post.createdAt).toLocaleDateString()}
                 </td>
-                <td className="py-2 px-2 text-gray-300">
+                <td className="py-2 px-2 text-gray-700 dark:text-gray-300">
                   <div>
                     <span className="truncate max-w-xs block">
                       {post.text.slice(0, 80)}
@@ -121,13 +120,13 @@ export default function TopPosts({ posts }) {
                     )}
                   </div>
                 </td>
-                <td className="py-2 px-2 text-right text-gray-300">
+                <td className="py-2 px-2 text-right text-gray-700 dark:text-gray-300">
                   {post.likeCount}
                 </td>
-                <td className="py-2 px-2 text-right text-gray-300">
+                <td className="py-2 px-2 text-right text-gray-700 dark:text-gray-300">
                   {post.repostCount}
                 </td>
-                <td className="py-2 px-2 text-right text-gray-300">
+                <td className="py-2 px-2 text-right text-gray-700 dark:text-gray-300">
                   {post.replyCount}
                 </td>
                 <td className="py-2 px-2 text-right font-medium text-sky-400">

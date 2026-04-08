@@ -79,6 +79,8 @@ function extractPost(post) {
     createdAt: post.record?.createdAt || "",
     embed: post.record?.embed || null,
     hasReply: !!post.record?.reply,
+    replyRoot: post.record?.reply?.root?.uri || null,
+    replyParent: post.record?.reply?.parent?.uri || null,
     likeCount: post.likeCount || 0,
     repostCount: post.repostCount || 0,
     replyCount: post.replyCount || 0,

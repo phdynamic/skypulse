@@ -11,8 +11,17 @@
       rel="stylesheet"
     />
   </head>
-  <body class="bg-[#0f0f13] text-white font-sans min-h-screen">
+  <body class="font-sans min-h-screen bg-gray-50 text-gray-900 dark:bg-[#0f0f13] dark:text-white">
     <div id="root"></div>
+    <script>
+      // Apply saved theme before React renders to prevent flash
+      const theme = localStorage.getItem("skypulse_theme");
+      if (theme === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

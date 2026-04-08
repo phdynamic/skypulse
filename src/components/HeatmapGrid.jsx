@@ -78,8 +78,8 @@ export default function HeatmapGrid({ posts }) {
     : [];
 
   return (
-    <div className="bg-[#16161e] border border-white/10 rounded-xl p-6">
-      <h2 className="text-lg font-semibold mb-4 text-white">
+    <div className="bg-white border border-gray-200 dark:bg-[#16161e] dark:border-white/10 rounded-xl p-6">
+      <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
         Posting Heatmap
       </h2>
       <p className="text-xs text-gray-500 mb-4">
@@ -166,7 +166,7 @@ export default function HeatmapGrid({ posts }) {
 
       {tooltip && (
         <div
-          className="fixed z-50 px-3 py-1.5 bg-gray-900 text-white text-xs rounded-lg shadow-lg pointer-events-none border border-white/10"
+          className="fixed z-50 px-3 py-1.5 bg-gray-900 text-gray-900 dark:text-white text-xs rounded-lg shadow-lg pointer-events-none border border-white/10"
           style={{ left: tooltip.x + 12, top: tooltip.y - 30 }}
         >
           {tooltip.text}
@@ -176,12 +176,12 @@ export default function HeatmapGrid({ posts }) {
       {selectedCell && selectedPosts.length > 0 && (
         <div className="mt-6 border-t border-white/10 pt-4">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-medium text-gray-300">
+            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {selectedCell.day} at {selectedCell.hour}:00 — {selectedPosts.length} post{selectedPosts.length !== 1 ? "s" : ""}
             </h3>
             <button
               onClick={() => setSelectedCell(null)}
-              className="text-xs text-gray-500 hover:text-white transition-colors"
+              className="text-xs text-gray-500 hover:text-gray-900 dark:text-white transition-colors"
             >
               Close
             </button>
@@ -195,11 +195,11 @@ export default function HeatmapGrid({ posts }) {
                   href={getPostUrl(post.uri)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bg-[#0f0f13] rounded-lg p-3 hover:bg-white/5 transition-colors"
+                  className="block bg-gray-100 dark:bg-[#0f0f13] rounded-lg p-3 hover:bg-gray-200 dark:hover:bg-white/5 transition-colors"
                 >
                   <div className="flex gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-300 line-clamp-2">
+                      <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
                         {post.text || "(no text)"}
                       </p>
                       {post.imageAlt && (
