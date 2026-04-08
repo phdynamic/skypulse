@@ -198,17 +198,15 @@ export default function HeatmapGrid({ posts }) {
                   className="block bg-[#0f0f13] rounded-lg p-3 hover:bg-white/5 transition-colors"
                 >
                   <div className="flex gap-3">
-                    {post.thumbnail && (
-                      <img
-                        src={post.thumbnail}
-                        alt=""
-                        className="w-16 h-16 rounded-md object-cover flex-shrink-0"
-                      />
-                    )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-gray-300 line-clamp-2">
                         {post.text || "(no text)"}
                       </p>
+                      {post.imageAlt && (
+                        <p className="text-xs text-purple-400 mt-1 italic line-clamp-1">
+                          Alt: {post.imageAlt}
+                        </p>
+                      )}
                       <div className="flex gap-3 mt-1.5 text-xs text-gray-500">
                         <span>{new Date(post.createdAt).toLocaleDateString()}</span>
                         <span>{post.likeCount} likes</span>

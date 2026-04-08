@@ -109,18 +109,16 @@ export default function TopPosts({ posts }) {
                   {new Date(post.createdAt).toLocaleDateString()}
                 </td>
                 <td className="py-2 px-2 text-gray-300">
-                  <div className="flex items-center gap-2">
-                    {post.thumbnail && (
-                      <img
-                        src={post.thumbnail}
-                        alt=""
-                        className="w-10 h-10 rounded object-cover flex-shrink-0"
-                      />
-                    )}
-                    <span className="truncate max-w-xs">
+                  <div>
+                    <span className="truncate max-w-xs block">
                       {post.text.slice(0, 80)}
                       {post.text.length > 80 ? "…" : ""}
                     </span>
+                    {post.imageAlt && (
+                      <span className="text-xs text-purple-400 italic block mt-0.5 truncate max-w-xs">
+                        Alt: {post.imageAlt}
+                      </span>
+                    )}
                   </div>
                 </td>
                 <td className="py-2 px-2 text-right text-gray-300">

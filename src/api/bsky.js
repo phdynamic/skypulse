@@ -54,13 +54,13 @@ export async function getAuthorFeed(handle, maxPosts, onProgress) {
 }
 
 function extractPost(post) {
-  // Get thumbnail URL from the resolved embed view (not record.embed)
-  let thumbnail = null;
+  // Get alt text from the resolved embed view for image posts
+  let imageAlt = null;
   const embedView = post.embed;
   if (embedView?.$type === "app.bsky.embed.images#view") {
-    thumbnail = embedView.images?.[0]?.thumb || null;
+    imageAlt = embedView.images?.[0]?.alt || null;
   } else if (embedView?.$type === "app.bsky.embed.recordWithMedia#view") {
-    thumbnail = embedView.media?.images?.[0]?.thumb || null;
+    imageAlt = embedView.media?.images?.[0]?.alt || null;
   }
 
   return {
@@ -77,6 +77,6 @@ function extractPost(post) {
       (post.likeCount || 0) +
       (post.repostCount || 0) +
       (post.replyCount || 0),
-    thumbnail,
+    imageAlt,
   };
 }
