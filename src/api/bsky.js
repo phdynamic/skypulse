@@ -58,9 +58,18 @@ function extractPost(post) {
   let imageAlt = null;
   const embedView = post.embed;
   if (embedView?.$type === "app.bsky.embed.images#view") {
-    imageAlt = embedView.images?.[0]?.alt || null;
+    imageAlt = embedView.images?.[0]?.alt?.trim() || null;
   } else if (embedView?.$type === "app.bsky.embed.recordWithMedia#view") {
-    imageAlt = embedView.media?.images?.[0]?.alt || null;
+    imageAlt = embedView.media?.images?.[0]?.alt?.trim() || null;
+  }
+  // Fall back: check record.embed for alt text if view didn't have it
+  if (!imageAlt) {
+    const recEmbed = post.record?.embed;
+    if (recEmbed?.$type === "app.bsky.embed.images") {
+      imageAlt = recEmbed.images?.[0]?.alt?.trim() || null;
+    } else if (recEmbed?.$type === "app.bsky.embed.recordWithMedia") {
+      imageAlt = recEmbed.media?.images?.[0]?.alt?.trim() || null;
+    }
   }
 
   return {
