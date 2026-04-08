@@ -54,6 +54,15 @@ export async function getAuthorFeed(handle, maxPosts, onProgress) {
 }
 
 function extractPost(post) {
+  // Get thumbnail URL from the resolved embed view (not record.embed)
+  let thumbnail = null;
+  const embedView = post.embed;
+  if (embedView?.$type === "app.bsky.embed.images#view") {
+    thumbnail = embedView.images?.[0]?.thumb || null;
+  } else if (embedView?.$type === "app.bsky.embed.recordWithMedia#view") {
+    thumbnail = embedView.media?.images?.[0]?.thumb || null;
+  }
+
   return {
     uri: post.uri,
     cid: post.cid,
@@ -68,5 +77,6 @@ function extractPost(post) {
       (post.likeCount || 0) +
       (post.repostCount || 0) +
       (post.replyCount || 0),
+    thumbnail,
   };
 }

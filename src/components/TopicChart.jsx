@@ -53,37 +53,40 @@ export default function TopicChart({ posts }) {
           </button>
         </div>
       </div>
-      <ResponsiveContainer width="100%" height={500}>
-        <BarChart
-          data={data}
-          layout="vertical"
-          margin={{ top: 0, right: 20, left: 0, bottom: 0 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke="#222" />
-          <XAxis type="number" tick={{ fill: "#888", fontSize: 11 }} />
-          <YAxis
-            type="category"
-            dataKey="word"
-            width={80}
-            tick={{ fill: "#ccc", fontSize: 11 }}
-          />
-          <Tooltip
-            contentStyle={{
-              background: "#1a1a2e",
-              border: "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 8,
-              fontSize: 12,
-            }}
-            formatter={(value, name) => {
-              if (name === "count") return [value, "Posts"];
-              if (name === "avgEngagement") return [value, "Avg Engagement"];
-              return [value, name];
-            }}
-          />
-          <Bar dataKey="count" fill="#38bdf8" radius={[0, 4, 4, 0]} />
-          <Bar dataKey="avgEngagement" fill="#a78bfa" radius={[0, 4, 4, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div className="overflow-x-auto">
+        <ResponsiveContainer width="100%" height={350}>
+          <BarChart
+            data={data}
+            margin={{ top: 10, right: 10, left: 0, bottom: 60 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
+            <XAxis
+              dataKey="word"
+              tick={{ fill: "#ccc", fontSize: 10 }}
+              angle={-45}
+              textAnchor="end"
+              interval={0}
+              height={60}
+            />
+            <YAxis tick={{ fill: "#888", fontSize: 11 }} />
+            <Tooltip
+              contentStyle={{
+                background: "#1a1a2e",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 8,
+                fontSize: 12,
+              }}
+              formatter={(value, name) => {
+                if (name === "count") return [value, "Posts"];
+                if (name === "avgEngagement") return [value, "Avg Engagement"];
+                return [value, name];
+              }}
+            />
+            <Bar dataKey="count" fill="#38bdf8" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="avgEngagement" fill="#a78bfa" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }

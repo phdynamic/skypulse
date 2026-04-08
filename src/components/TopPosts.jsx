@@ -99,7 +99,7 @@ export default function TopPosts({ posts }) {
             </tr>
           </thead>
           <tbody>
-            {filtered.slice(0, 50).map((post) => (
+            {filtered.slice(0, 25).map((post) => (
               <tr
                 key={post.uri}
                 onClick={() => window.open(getPostUrl(post.uri), "_blank")}
@@ -108,9 +108,20 @@ export default function TopPosts({ posts }) {
                 <td className="py-2 px-2 text-xs text-gray-400 whitespace-nowrap">
                   {new Date(post.createdAt).toLocaleDateString()}
                 </td>
-                <td className="py-2 px-2 text-gray-300 truncate max-w-xs">
-                  {post.text.slice(0, 80)}
-                  {post.text.length > 80 ? "…" : ""}
+                <td className="py-2 px-2 text-gray-300">
+                  <div className="flex items-center gap-2">
+                    {post.thumbnail && (
+                      <img
+                        src={post.thumbnail}
+                        alt=""
+                        className="w-10 h-10 rounded object-cover flex-shrink-0"
+                      />
+                    )}
+                    <span className="truncate max-w-xs">
+                      {post.text.slice(0, 80)}
+                      {post.text.length > 80 ? "…" : ""}
+                    </span>
+                  </div>
                 </td>
                 <td className="py-2 px-2 text-right text-gray-300">
                   {post.likeCount}

@@ -10,7 +10,6 @@ import {
 import Header from "./components/Header";
 import HeatmapGrid from "./components/HeatmapGrid";
 import TopicChart from "./components/TopicChart";
-import FormatChart from "./components/FormatChart";
 import TopPosts from "./components/TopPosts";
 import StatCard from "./components/StatCard";
 
@@ -131,7 +130,6 @@ export default function App() {
           <>
             <HeatmapGrid posts={posts} />
             <TopicChart posts={posts} />
-            <FormatChart posts={posts} />
             <TopPosts posts={posts} />
             <StatCard profile={profile} handle={CONFIG.handle} />
           </>
